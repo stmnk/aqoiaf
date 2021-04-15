@@ -52,8 +52,37 @@ for entity in output.entities:
 
 blurred = passage_text
 for entity in entities_from:
-    blurred = blurred.replace(entity, '[XXXX]')
+    blurred = blurred.replace(entity, '[:snowflake::fire::snowflake::fire:]')
 
 st.write(blurred)
 
+BOOKS_LABELS = ['agot', 'acok', 'asos', 'affc', 'adwd']
+BOOKS_TITLES = ['A Game of Thrones', 'A Clash of Kings', 'A Strom of Swords', 'A Feast for Crows', 'A Dance with Dragons']
+BOOKS_DICT = dict(list(zip(BOOKS_LABELS, BOOKS_TITLES)))
+
+ANSWER_BOOK = st.selectbox('Pick the book this passage beongs to:', ['Pick a book'] + BOOKS_TITLES, key='box_select_book')
+
+if ANSWER_BOOK != 'Pick a book': 
+    st.write(ANSWER_BOOK)
+
+POV_NAMES = ['T', 'J', 'C', 'D', 'B', ]
+ANSWER_POV = st.selectbox('Pick the point-of-view character the passage beongs to:', ['Pick a POV character'] + POV_NAMES, key='box_select_book')
+
+if ANSWER_POV != 'Pick a POV character': 
+    st.write(ANSWER_POV)
+
+LOCATIONS_NAMES = ['W', 'CR', 'KL', 'RR', 'E', 'HG', 'SS']
+ANSWER_LOC = st.selectbox('Pick the location in which the passage happens:', ['Pick a location'] + LOCATIONS_NAMES, key='box_select_book')
+
+if ANSWER_LOC != 'Pick a location': 
+    st.write(ANSWER_LOC)
+
+if st.checkbox(f'Spoiler: show me the book this passage is from! (-25 points)'):
+    st.write(BOOKS_DICT[result['hits']['hits'][0]['_source']['book']])
+if st.checkbox(f'Spoiler: show me the blurred entities! (-25 points)'):
+    st.write(str(entities_from))
+if st.checkbox(f'Spoiler: show me the POV character! (-25 points)'):
+    st.write(result['hits']['hits'][0]['_source']['pov_character'])
+if st.checkbox(f'Spoiler: show me the full text of the passage! (-25 points)'):
+    st.write(passage_text)
 
